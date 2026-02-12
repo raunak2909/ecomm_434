@@ -3,6 +3,7 @@ import 'package:ecomm_434/domain/constants/app_urls.dart';
 import 'package:ecomm_434/ui/on_boarding/bloc/user_event.dart';
 import 'package:ecomm_434/ui/on_boarding/bloc/user_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   ApiHelper apiHelper;
@@ -32,6 +33,31 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       } catch (e) {
         emit(UserFailureState(errorMsg: e.toString()));
       }
+    });
+
+    on<UserLoginEvent>((event, emit) async{
+
+      emit(UserLoadingState());
+
+      try{
+        dynamic data = await apiHelper.postAPI(url: AppUrls.login_url, mBodyParams: {
+          "email":event.email,
+          "password":event.pass
+        });
+
+        if(data["status"]){
+          emit(UserSuccessState());
+          ///prefs
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString("user_token", data["tokan"]);
+        } else {
+          emit(UserFailureState(errorMsg: data["message"]));
+        }
+
+      } catch (e){
+        emit(UserFailureState(errorMsg: e.toString()));
+      }
+
     });
   }
 }

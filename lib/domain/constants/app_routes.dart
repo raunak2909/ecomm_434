@@ -1,3 +1,4 @@
+import 'package:ecomm_434/ui/dashboard/dashboard_page.dart';
 import 'package:ecomm_434/ui/on_boarding/login_page.dart';
 import 'package:ecomm_434/ui/on_boarding/sign_up_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,6 +15,7 @@ class AppRoutes{
     route_splash: (context) => SplashPage(),
     route_login: (context) => LoginPage(),
     route_sign_up: (context) => SignUpPage(),
+    route_dashboard: (context) => DashBoardPage(),
   };
 
 }

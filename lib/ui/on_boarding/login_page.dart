@@ -1,10 +1,11 @@
-
-
+import 'package:ecomm_434/ui/on_boarding/bloc/user_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/constants/app_routes.dart';
 import '../../domain/utils/ui_helper.dart';
+import 'bloc/user_bloc.dart';
+import 'bloc/user_state.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -82,11 +83,11 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 11),
               SizedBox(
                 width: double.infinity,
-                /*child: BlocConsumer<UserBloc, UserState>(
-                  listenWhen: (ps, cs){
+                child: BlocConsumer<UserBloc, UserState>(
+                  listenWhen: (ps, cs) {
                     return isLogin;
                   },
-                  buildWhen: (ps, cs){
+                  buildWhen: (ps, cs) {
                     return isLogin;
                   },
                   listener: (_, state) {
@@ -106,9 +107,11 @@ class _LoginPageState extends State<LoginPage> {
 
                     if (state is UserSuccessState) {
                       isAuthenticating = false;
-                      Navigator.pushReplacementNamed(context, AppRoutes.dashBoardPage);
+                      Navigator.pushReplacementNamed(
+                          context, AppRoutes.route_dashboard);
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Logged-in successfully!!"), backgroundColor: Colors.green,),
+                        SnackBar(content: Text("Logged-in successfully!!"),
+                          backgroundColor: Colors.green,),
                       );
                     }
                   },
@@ -122,12 +125,8 @@ class _LoginPageState extends State<LoginPage> {
                         if (formKey.currentState!.validate()) {
                           /// login work here
                           isLogin = true;
-                          context.read<UserBloc>().add(
-                            LoginUserEvent(
-                              email: emailController.text,
-                              pass: passController.text,
-                            ),
-                          );
+                          context.read<UserBloc>().add(UserLoginEvent(
+                              email: emailController.text, pass: passController.text));
                         }
                       },
                       child: isAuthenticating
@@ -147,7 +146,7 @@ class _LoginPageState extends State<LoginPage> {
                           : Text('Login'),
                     );
                   },
-                ),*/
+                ),
               ),
               SizedBox(height: 11),
               InkWell(
