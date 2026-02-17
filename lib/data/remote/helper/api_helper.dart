@@ -2,14 +2,34 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:ecomm_434/data/remote/helper/app_exception.dart';
+import 'package:ecomm_434/domain/constants/app_constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiHelper {
   getAPI() {}
 
-  Future<dynamic> postAPI({required String url, Map<String, dynamic>? mBodyParams}) async {
+  Future<dynamic> postAPI({
+    required String url,
+    Map<String, dynamic>? mBodyParams,
+    Map<String, String>? mHeaders,
+    bool isAuth = false,
+  }) async {
+    if (!isAuth) {
+      mHeaders ??= {};
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString(AppConstants.PREF_USER_TOKEN) ?? "";
+      mHeaders["Authorization"] = "Bearer $token";
+    }
+
+
     try {
-      http.Response response = await http.post(Uri.parse(url), body: mBodyParams != null ? jsonEncode(mBodyParams) : null);
+      http.Response response = await http.post(
+        Uri.parse(url),
+        body: mBodyParams != null ? jsonEncode(mBodyParams) : null,
+        headers: mHeaders
+      );
       return handleResponse(res: response);
     } on SocketException catch (e) {
       throw NoInternetException(exceptionMsg: e.toString());

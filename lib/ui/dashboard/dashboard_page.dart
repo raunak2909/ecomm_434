@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'nav_pages/cart_page.dart';
 import 'nav_pages/fav_page.dart';
-import 'nav_pages/home_page.dart';
+import 'nav_pages/home/home_page.dart';
 import 'nav_pages/menu_page.dart';
 import 'nav_pages/my_profile_page.dart';
 
@@ -12,7 +12,7 @@ class DashBoardPage extends StatefulWidget {
 }
 
 class _DashBoardPageState extends State<DashBoardPage> {
-  int selectedIndex = 0;
+  int selectedIndex = 2;
 
   List<Widget> mNav_pages = [
     MenuPage(),

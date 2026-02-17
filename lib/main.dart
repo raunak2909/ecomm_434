@@ -1,14 +1,20 @@
 import 'package:ecomm_434/data/remote/helper/api_helper.dart';
 import 'package:ecomm_434/domain/constants/app_routes.dart';
+import 'package:ecomm_434/ui/cart/bloc/cart_bloc.dart';
+import 'package:ecomm_434/ui/dashboard/nav_pages/home/bloc/product_bloc.dart';
 import 'package:ecomm_434/ui/on_boarding/bloc/user_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
   runApp(
-    BlocProvider(
-      create: (context) => UserBloc(apiHelper: ApiHelper()),
-      child: const MyApp(),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => UserBloc(apiHelper: ApiHelper())),
+        BlocProvider(create: (context) => ProductBloc(apiHelper: ApiHelper())),
+        BlocProvider(create: (context) => CartBloc(apiHelper: ApiHelper())),
+      ],
+      child: MyApp(),
     ),
   );
 }
